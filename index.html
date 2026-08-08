@@ -318,7 +318,19 @@
   /* ===== Full manifest grid ===== */
   .manifest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);box-shadow:0 0 30px -8px rgba(53,77,199,0.35);}
   .manifest-cat{background:var(--bg);padding:30px 28px;}
-  .manifest-cat-name{font-size:12px;color:var(--indigo-glow);letter-spacing:0.08em;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line);text-shadow:0 0 6px rgba(111,140,255,0.5);}
+  .manifest-cat-name{
+    font-size:12px;color:var(--indigo-glow);letter-spacing:0.08em;margin-bottom:16px;
+    padding-bottom:12px;border-bottom:1px solid var(--line);text-shadow:0 0 6px rgba(111,140,255,0.5);
+    cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;
+  }
+  .manifest-cat-name::-webkit-details-marker{display:none;}
+  .manifest-cat-name::after{
+    content:'+';font-family:'IBM Plex Mono',monospace;color:var(--cyan);font-size:14px;
+    transition:transform .2s ease;flex-shrink:0;margin-left:12px;
+  }
+  details.manifest-cat[open] > .manifest-cat-name::after{ content:'\2212'; }
+  details.manifest-cat:not([open]) .manifest-cat-name{ margin-bottom:0;border-bottom:none;padding-bottom:0; }
+  details.manifest-cat[open] .manifest-cat-name{ margin-bottom:16px; }
   .man-list{list-style:none;}
   .man-list li{display:flex;gap:12px;padding:7px 0;font-size:14px;color:var(--paper);}
   .man-list li span{font-family:'IBM Plex Mono',monospace;color:var(--slate);min-width:20px;flex-shrink:0;}
@@ -604,8 +616,8 @@
       <p class="section-desc">The complete grip inventory that ships with every package.</p>
     </div>
     <div class="manifest-grid reveal hud-corners">
-      <div class="manifest-cat">
-        <div class="manifest-cat-name mono">Stands</div>
+      <details class="manifest-cat" open>
+        <summary class="manifest-cat-name mono">Stands</summary>
         <ul class="man-list">
           <li><span>7</span>40" C-Stands</li>
           <li><span>1</span>20" C-Stands</li>
@@ -616,9 +628,9 @@
           <li><span>4</span>Sets of 3 Caster Wheels (Baby Stands)</li>
           <li><span>4</span>Sets of 3 Caster Wheels (Combo Stands)</li>
         </ul>
-      </div>
-      <div class="manifest-cat">
-        <div class="manifest-cat-name mono">Frame Kit &amp; Fabrics</div>
+      </details>
+      <details class="manifest-cat" open>
+        <summary class="manifest-cat-name mono">Frame Kit &amp; Fabrics</summary>
         <ul class="man-list">
           <li><span>1</span>12x12' Frame Kit (breaks to 6x6')</li>
           <li><span>1</span>12x12' Ultra Bounce</li>
@@ -629,9 +641,9 @@
           <li><span>1</span>6x6' Bleached Muslin</li>
           <li><span>1</span>6x6' Ultra Bounce</li>
         </ul>
-      </div>
-      <div class="manifest-cat">
-        <div class="manifest-cat-name mono">Floppies &amp; Diffusion</div>
+      </details>
+      <details class="manifest-cat" open>
+        <summary class="manifest-cat-name mono">Floppies &amp; Diffusion</summary>
         <ul class="man-list">
           <li><span>4</span>Solid Floppy</li>
           <li><span>2</span>Ultrabounce Floppy</li>
@@ -640,18 +652,18 @@
           <li><span>1</span>4x4' 250 Half White</li>
           <li><span>1</span>4x4' 216 Full White</li>
         </ul>
-      </div>
-      <div class="manifest-cat">
-        <div class="manifest-cat-name mono">Flags</div>
+      </details>
+      <details class="manifest-cat" open>
+        <summary class="manifest-cat-name mono">Flags</summary>
         <ul class="man-list">
           <li><span>2</span>24x36" Solid Flag</li>
           <li><span>1</span>24x36" Single Net Flag</li>
           <li><span>1</span>24x36" Double Net Flag</li>
           <li><span>1</span>24x36" Silk Flag</li>
         </ul>
-      </div>
-      <div class="manifest-cat">
-        <div class="manifest-cat-name mono">Clamps &amp; Clips</div>
+      </details>
+      <details class="manifest-cat" open>
+        <summary class="manifest-cat-name mono">Clamps &amp; Clips</summary>
         <ul class="man-list">
           <li><span>2</span>Cardellini Clamp</li>
           <li><span>2</span>Mafer Clamp</li>
@@ -662,33 +674,33 @@
           <li><span>10</span>#2 Clip</li>
           <li><span>10</span>#1 Clip</li>
         </ul>
-      </div>
-      <div class="manifest-cat">
-        <div class="manifest-cat-name mono">Apple Boxes</div>
+      </details>
+      <details class="manifest-cat" open>
+        <summary class="manifest-cat-name mono">Apple Boxes</summary>
         <ul class="man-list">
           <li><span>2</span>Full Apple</li>
           <li><span>1</span>½ Apple</li>
           <li><span>1</span>¼ Apple</li>
           <li><span>1</span>⅛ Apple (Pancake)</li>
         </ul>
-      </div>
-      <div class="manifest-cat">
-        <div class="manifest-cat-name mono">Sandbags</div>
+      </details>
+      <details class="manifest-cat" open>
+        <summary class="manifest-cat-name mono">Sandbags</summary>
         <ul class="man-list">
           <li><span>4</span>25lb Sandbags</li>
           <li><span>2</span>35lb Sandbags</li>
           <li><span>4</span>20lb Sandbags</li>
         </ul>
-      </div>
-      <div class="manifest-cat">
-        <div class="manifest-cat-name mono">Stingers</div>
+      </details>
+      <details class="manifest-cat" open>
+        <summary class="manifest-cat-name mono">Stingers</summary>
         <ul class="man-list">
           <li><span>4</span>25' Stingers</li>
           <li><span>4</span>50' Stingers</li>
         </ul>
-      </div>
-      <div class="manifest-cat">
-        <div class="manifest-cat-name mono">Misc</div>
+      </details>
+      <details class="manifest-cat" open>
+        <summary class="manifest-cat-name mono">Misc</summary>
         <ul class="man-list">
           <li><span>16</span>Sliced Tennis Balls</li>
           <li><span>2</span>Ratchet Straps</li>
@@ -697,7 +709,7 @@
           <li><span>4</span>25' Tie-Down Lines</li>
           <li><span>10</span>Safety Chains</li>
         </ul>
-      </div>
+      </details>
     </div>
   </div>
 </section>
@@ -907,6 +919,25 @@
     });
   }, {threshold:0.12});
   revealEls.forEach(el => io.observe(el));
+
+  /* ===== Manifest accordion: collapsed by default on mobile, expanded on desktop ===== */
+  const manifestCats = document.querySelectorAll('.manifest-cat');
+  let manifestIsMobile = null;
+  function setManifestAccordionState(){
+    const isMobile = window.innerWidth <= 860;
+    if(isMobile === manifestIsMobile) return;
+    manifestIsMobile = isMobile;
+    manifestCats.forEach(d => {
+      if(isMobile) d.removeAttribute('open');
+      else d.setAttribute('open', '');
+    });
+  }
+  setManifestAccordionState();
+  let manifestResizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(manifestResizeTimer);
+    manifestResizeTimer = setTimeout(setManifestAccordionState, 200);
+  });
 
   document.getElementById('bookingForm').addEventListener('submit', function(e){
     e.preventDefault();
