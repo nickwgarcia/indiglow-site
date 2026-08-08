@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indiglow Lighting: Grip &amp; Electric for Indie Productions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a0b12;
+    --panel: #10121e;
+    --panel-2: #151829;
+    --paper: #e8ecf5;
+    --indigo: #354dc7;
+    --indigo-glow: #6f8cff;
+    --indigo-dim: #263285;
+    --cyan: #2de2e6;
+    --slate: #838aa8;
+    --line: rgba(240,241,247,0.12);
+    --maxw: 1180px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--paper);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    position:relative;
+  }
+  /* full-page scanline + vignette overlay */
+  body::before{
+    content:'';
+    position:fixed;inset:0;z-index:999;pointer-events:none;
+    background:repeating-linear-gradient(
+      to bottom,
+      rgba(240,241,247,0.028) 0px,
+      rgba(240,241,247,0.028) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    mix-blend-mode:overlay;
+  }
+  body::after{
+    content:'';
+    position:fixed;inset:0;z-index:998;pointer-events:none;
+    background:radial-gradient(ellipse 120% 90% at 50% 50%, transparent 55%, rgba(0,0,0,0.55) 100%);
+  }
+  h1,h2,h3,.display{
+    font-family:'Bebas Neue',sans-serif;
+    letter-spacing:0.02em;
+    line-height:0.95;
+    font-weight:400;
+  }
+  .mono{
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{display:block;max-width:100%;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px;}
+
+  /* ===== HUD corner brackets (cyberpunk framing) ===== */
+  .hud-corners{position:relative;}
+  .hud-corners::before, .hud-corners::after{
+    content:'';position:absolute;width:16px;height:16px;
+    border:1.5px solid var(--cyan);opacity:0.7;pointer-events:none;
+  }
+  .hud-corners::before{top:-1px;left:-1px;border-right:none;border-bottom:none;}
+  .hud-corners::after{bottom:-1px;right:-1px;border-left:none;border-top:none;}
+
+  /* ===== Glitch text ===== */
+  @keyframes glitchShift{
+    0%, 88%, 100%{ transform:translate(0,0); }
+    89%{ transform:translate(-2px,1px); }
+    90.5%{ transform:translate(2px,-1px); }
+    92%{ transform:translate(-1px,0); }
+    93.5%{ transform:translate(0,0); }
+  }
+  .glitch{
+    position:relative;display:inline-block;
+    animation:glitchShift 7s infinite;
+  }
+  .glitch::before, .glitch::after{
+    content:attr(data-text);
+    position:absolute;top:0;left:0;width:100%;height:100%;
+    overflow:hidden;opacity:0;
+  }
+  .glitch::before{color:var(--cyan);animation:glitchTop 7s infinite;}
+  .glitch::after{color:#ff2e88;animation:glitchBottom 7s infinite;}
+  @keyframes glitchTop{
+    0%, 88%, 100%{ opacity:0; clip-path:inset(0 0 0 0); transform:translate(0,0); }
+    89%{ opacity:0.7; clip-path:inset(0 0 60% 0); transform:translate(-3px,-1px); }
+    90.5%{ opacity:0.7; clip-path:inset(30% 0 30% 0); transform:translate(2px,1px); }
+    92%{ opacity:0; }
+  }
+  @keyframes glitchBottom{
+    0%, 88%, 100%{ opacity:0; clip-path:inset(0 0 0 0); transform:translate(0,0); }
+    89%{ opacity:0.6; clip-path:inset(60% 0 0 0); transform:translate(3px,1px); }
+    90.5%{ opacity:0.6; clip-path:inset(20% 0 50% 0); transform:translate(-2px,-1px); }
+    92%{ opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .glitch, .glitch::before, .glitch::after{ animation:none; }
+  }
+
+  /* ===== Reveal on scroll ===== */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease, transform .8s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* ===== Nav ===== */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:22px 0;
+    background:linear-gradient(to bottom, rgba(10,11,18,0.92), rgba(10,11,18,0));
+    transition:background .3s ease, padding .3s ease;
+  }
+  header.scrolled{
+    background:rgba(10,11,18,0.88);
+    backdrop-filter:blur(10px);
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  nav{display:flex;align-items:center;justify-content:space-between;}
+  .logo{
+    font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:0.09em;
+    display:flex;align-items:center;gap:11px;
+    padding:9px 18px 9px 14px;
+    border:1.5px solid var(--indigo);
+    border-radius:999px;
+    color:var(--indigo-glow);
+    text-shadow:0 0 6px rgba(111,140,255,0.85), 0 0 16px rgba(53,77,199,0.6);
+    box-shadow:0 0 10px rgba(53,77,199,0.45), inset 0 0 10px rgba(53,77,199,0.15);
+    animation:neonFlicker 6s infinite;
+  }
+  .logo .dot{
+    width:10px;height:10px;border-radius:50%;background:var(--indigo-glow);
+    box-shadow:0 0 6px 1px var(--indigo-glow), 0 0 16px 3px var(--indigo);
+    flex-shrink:0;
+  }
+  @keyframes neonFlicker{
+    0%, 3%, 6%, 100%{ opacity:1; }
+    4%{ opacity:0.75; }
+    5%{ opacity:0.95; }
+  }
+  @media (prefers-reduced-motion: reduce){ .logo{animation:none;} }
+  .navlinks{display:flex;align-items:center;gap:36px;}
+  .navlinks a.link{
+    font-size:13px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--slate);font-family:'IBM Plex Mono',monospace;
+    transition:color .2s ease;
+  }
+  .navlinks a.link:hover{color:var(--indigo-glow);text-shadow:0 0 8px rgba(111,140,255,0.7);}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:11px 22px;
+    background:var(--indigo);
+    color:#f0f1f7;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;letter-spacing:0.1em;text-transform:uppercase;font-weight:500;
+    border:1px solid var(--indigo);
+    box-shadow:0 0 14px rgba(53,77,199,0.55);
+    transition:background .2s ease, color .2s ease, transform .2s ease, box-shadow .2s ease;
+    white-space:nowrap;
+    clip-path:polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  }
+  .btn:hover{background:transparent;color:var(--indigo-glow);transform:translateY(-1px);box-shadow:0 0 22px rgba(53,77,199,0.85);}
+  .btn-outline{
+    background:transparent;color:var(--paper);border:1px solid var(--line);box-shadow:none;
+  }
+  .btn-outline:hover{border-color:var(--indigo);color:var(--indigo-glow);box-shadow:0 0 16px rgba(53,77,199,0.5);}
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding-top:120px;
+    padding-bottom:90px;
+  }
+  .hero-bg{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse 950px 650px at 80% 18%, rgba(53,77,199,0.35), transparent 60%),
+      radial-gradient(ellipse 600px 420px at 4% 12%, rgba(45,226,230,0.14), transparent 65%),
+      radial-gradient(ellipse 750px 550px at 8% 88%, rgba(46,54,180,0.28), transparent 65%),
+      linear-gradient(180deg, #0a0b12 0%, #0b0e1c 55%, #10121e 100%);
+    z-index:0;
+  }
+  .hero-bg::after{
+    content:'';
+    position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(240,241,247,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(240,241,247,0.035) 1px, transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(ellipse 70% 60% at 60% 30%, black, transparent);
+  }
+  .hero-content{position:relative;z-index:2;}
+  .eyebrow{
+    font-size:12px;color:var(--indigo-glow);margin-bottom:22px;
+    display:flex;align-items:center;gap:10px;
+    text-shadow:0 0 8px rgba(111,140,255,0.6);
+    font-family:'IBM Plex Mono',monospace;letter-spacing:0.08em;text-transform:uppercase;
+  }
+  .eyebrow::before{content:'';width:26px;height:1px;background:var(--cyan);box-shadow:0 0 8px 1px var(--cyan);display:inline-block;}
+  .cursor-blink{
+    display:inline-block;width:8px;height:14px;background:var(--cyan);
+    box-shadow:0 0 8px 1px var(--cyan);
+    animation:blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink{ 0%,49%{ opacity:1; } 50%,100%{ opacity:0; } }
+  @media (prefers-reduced-motion: reduce){ .cursor-blink{animation:none;} }
+  .hero h1{
+    font-size:clamp(48px, 8.4vw, 118px);
+    max-width:920px;
+    text-transform:uppercase;
+    color:var(--paper);
+  }
+  .hero h1 em{
+    font-style:normal;color:var(--indigo-glow);
+    text-shadow:0 0 8px rgba(111,140,255,0.85), 0 0 24px rgba(53,77,199,0.65), 0 0 60px rgba(53,77,199,0.35);
+  }
+  .hero-sub{
+    max-width:520px;
+    margin-top:26px;
+    font-size:17px;
+    line-height:1.6;
+    color:var(--slate);
+  }
+  .hero-actions{margin-top:38px;display:flex;gap:16px;flex-wrap:wrap;}
+  .hero-meta{
+    position:relative;z-index:2;
+    display:flex;gap:40px;margin-top:76px;
+    padding-top:26px;border-top:1px solid var(--line);
+    flex-wrap:wrap;
+  }
+  .hero-meta div{font-size:11px;color:var(--slate);}
+  .hero-meta strong{display:block;color:var(--paper);font-size:13px;margin-top:6px;font-weight:600;}
+
+  /* ===== Section shell ===== */
+  section{padding:110px 0;position:relative;}
+  .section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:56px;flex-wrap:wrap;}
+  .section-tag{font-size:12px;color:var(--indigo-glow);margin-bottom:14px;text-shadow:0 0 8px rgba(111,140,255,0.55);font-family:'IBM Plex Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;}
+  .section-tag::before{content:'[ ';color:var(--cyan);}
+  .section-tag::after{content:' ]';color:var(--cyan);}
+  h2.section-title{font-size:clamp(34px,5vw,58px);text-transform:uppercase;max-width:640px;}
+  .section-desc{max-width:360px;color:var(--slate);font-size:15px;line-height:1.6;}
+
+  /* ===== About ===== */
+  .about{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .about-grid{display:grid;grid-template-columns:0.85fr 1.15fr;gap:64px;align-items:center;}
+  .about-photo{position:relative;aspect-ratio:4/5;background:var(--panel-2);border:1px solid var(--line);overflow:hidden;
+    display:flex;align-items:center;justify-content:center;text-align:center;}
+  .about-photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(25%) contrast(1.05) brightness(0.9) saturate(1.1) hue-rotate(-6deg);}
+  .about-photo .ph-label{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--slate);letter-spacing:0.05em;line-height:1.7;padding:30px;}
+  .about-photo .ph-label b{display:block;color:var(--indigo-glow);font-size:13px;margin-bottom:8px;text-shadow:0 0 8px rgba(111,140,255,0.55);}
+  .about-photo .frame-tag{
+    position:absolute;bottom:16px;left:16px;
+    font-size:10px;background:rgba(10,11,18,0.8);padding:6px 10px;
+    color:var(--indigo-glow);border:1px solid var(--line);text-shadow:0 0 6px rgba(111,140,255,0.5);
+  }
+  .about-body p{font-size:17px;line-height:1.75;color:var(--paper);margin-bottom:20px;max-width:520px;}
+  .about-body p.dim{color:var(--slate);}
+  .about-stats{display:flex;gap:48px;margin-top:36px;flex-wrap:wrap;}
+  .about-stats div strong{display:block;font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--indigo-glow);text-shadow:0 0 10px rgba(111,140,255,0.6);}
+  .about-stats div span{font-size:11px;color:var(--slate);}
+
+  /* ===== Manifest (call sheet) ===== */
+  .callsheet{border:1px solid var(--line);box-shadow:0 0 30px -8px rgba(53,77,199,0.35);}
+  .cs-row{
+    display:grid;grid-template-columns:70px 1.1fr 1.6fr 150px;
+    border-bottom:1px solid var(--line);
+    align-items:center;
+  }
+  .cs-row:last-child{border-bottom:none;}
+  .cs-row.head{background:var(--panel);}
+  .cs-row.head div{font-size:11px;color:var(--indigo-dim);padding:16px 20px;}
+  .cs-row:not(.head){transition:background .2s ease;}
+  .cs-row:not(.head):hover{background:var(--panel);}
+  .cs-row div{padding:26px 20px;font-size:14px;}
+  .cs-num{color:var(--indigo-glow);font-family:'IBM Plex Mono',monospace;font-size:13px;text-shadow:0 0 6px rgba(111,140,255,0.5);}
+  .cs-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:0.03em;text-transform:uppercase;}
+  .cs-desc{color:var(--slate);font-size:14px;line-height:1.6;}
+  .cs-tag{color:var(--slate);font-size:11px;text-align:right;white-space:nowrap;line-height:1.5;}
+
+  /* ===== Package price block ===== */
+  .package{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .package-panel{
+    border:1px solid var(--line);
+    display:grid;grid-template-columns:1fr 1fr;
+    box-shadow:0 0 30px -8px rgba(53,77,199,0.35);
+  }
+  .package-price{padding:48px;border-right:1px solid var(--line);}
+  .package-price .name{font-family:'IBM Plex Mono',monospace;text-transform:uppercase;color:var(--indigo-glow);font-size:12px;letter-spacing:0.08em;margin-bottom:18px;text-shadow:0 0 6px rgba(111,140,255,0.5);}
+  .price-row{display:flex;align-items:baseline;gap:8px;}
+  .price-row .amount{font-family:'Bebas Neue',sans-serif;font-size:84px;color:var(--paper);text-shadow:0 0 18px rgba(53,77,199,0.35);}
+  .price-fee{font-size:14px;color:var(--slate);margin-top:6px;font-family:'IBM Plex Mono',monospace;}
+  .price-desc{margin-top:22px;color:var(--slate);font-size:15px;line-height:1.65;max-width:400px;}
+  .package-price .btn{margin-top:30px;}
+  .package-includes{padding:48px;}
+  .package-includes .name{font-family:'IBM Plex Mono',monospace;text-transform:uppercase;color:var(--slate);font-size:12px;letter-spacing:0.08em;margin-bottom:18px;}
+  .inc-list{list-style:none;}
+  .inc-list li{display:flex;gap:12px;align-items:center;padding:11px 0;border-bottom:1px dashed var(--line);font-size:15px;}
+  .inc-list li:last-child{border-bottom:none;}
+  .inc-list .chk{width:15px;height:15px;border:1px solid var(--indigo-glow);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--indigo-glow);box-shadow:0 0 6px rgba(53,77,199,0.5);}
+
+  /* ===== Full manifest grid ===== */
+  .manifest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);box-shadow:0 0 30px -8px rgba(53,77,199,0.35);}
+  .manifest-cat{background:var(--bg);padding:30px 28px;}
+  .manifest-cat-name{font-size:12px;color:var(--indigo-glow);letter-spacing:0.08em;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--line);text-shadow:0 0 6px rgba(111,140,255,0.5);}
+  .man-list{list-style:none;}
+  .man-list li{display:flex;gap:12px;padding:7px 0;font-size:14px;color:var(--paper);}
+  .man-list li span{font-family:'IBM Plex Mono',monospace;color:var(--slate);min-width:20px;flex-shrink:0;}
+  @media (max-width:860px){ .manifest-grid{grid-template-columns:1fr;} }
+
+  /* ===== À la carte grid ===== */
+  .carte-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);
+    box-shadow:0 0 30px -8px rgba(53,77,199,0.35);
+  }
+  .carte-item{background:var(--bg);padding:32px 26px;transition:background .2s ease;}
+  .carte-item:hover{background:var(--panel);}
+  .carte-item .idx{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--indigo-dim);}
+  .carte-item h3{font-size:25px;margin:14px 0 8px;letter-spacing:0.02em;text-transform:uppercase;}
+  .carte-item .desc{font-size:13.5px;color:var(--slate);line-height:1.55;min-height:40px;}
+  .carte-item .price{margin-top:20px;font-family:'IBM Plex Mono',monospace;color:var(--indigo-glow);font-size:15px;text-shadow:0 0 6px rgba(111,140,255,0.5);}
+
+  /* ===== Booking ===== */
+  .booking{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .booking-panel{border:1px solid var(--line);padding:48px;background:var(--bg);box-shadow:0 0 30px -8px rgba(53,77,199,0.35);}
+  .booking-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 24px;margin-top:8px;}
+  .field{display:flex;flex-direction:column;gap:8px;}
+  .field.full{grid-column:1/-1;}
+  .field label{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--slate);}
+  .field input, .field select, .field textarea{
+    background:var(--panel-2);border:1px solid var(--line);color:var(--paper);
+    padding:13px 14px;font-family:'Inter',sans-serif;font-size:14px;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{outline:none;border-color:var(--indigo);box-shadow:0 0 10px rgba(53,77,199,0.4);}
+  .addon-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+  .addon{display:flex;align-items:center;gap:10px;border:1px solid var(--line);padding:11px 13px;font-size:13.5px;cursor:pointer;}
+  .addon-qty{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);padding:9px 13px;font-size:13.5px;}
+  .addon-qty .qty-controls{display:flex;align-items:center;gap:8px;}
+  .addon-qty input[type="number"]{
+    width:44px;background:var(--panel-2);border:1px solid var(--line);color:var(--paper);
+    text-align:center;padding:6px 4px;font-family:'IBM Plex Mono',monospace;font-size:13px;
+  }
+  .addon-qty input[type="number"]:focus{outline:none;border-color:var(--indigo);}
+  .quote-panel{
+    margin-top:28px;border:1px solid var(--indigo);background:rgba(53,77,199,0.06);
+    box-shadow:0 0 24px -6px rgba(53,77,199,0.5);
+  }
+  .quote-head{
+    padding:14px 20px;border-bottom:1px solid var(--line);
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--indigo-glow);text-shadow:0 0 6px rgba(111,140,255,0.5);
+  }
+  .quote-lines{padding:16px 20px;min-height:24px;}
+  .quote-line{display:flex;justify-content:space-between;font-size:13.5px;color:var(--paper);padding:6px 0;border-bottom:1px dashed var(--line);}
+  .quote-line:last-child{border-bottom:none;}
+  .quote-empty{font-size:13px;color:var(--slate);font-style:italic;}
+  .quote-total-row{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:16px 20px;border-top:1px solid var(--line);
+  }
+  .quote-total-label{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--slate);}
+  .quote-total-amount{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--indigo-glow);text-shadow:0 0 12px rgba(111,140,255,0.6);}
+  .quote-fineprint{padding:0 20px 16px;font-size:11.5px;color:var(--slate);}
+
+  /* ===== Date mode toggle ===== */
+  .mode-toggle{display:flex;gap:1px;background:var(--line);border:1px solid var(--line);width:fit-content;margin-bottom:16px;}
+  .mode-toggle button{
+    background:var(--bg);color:var(--slate);border:none;padding:9px 18px;
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.06em;text-transform:uppercase;
+    cursor:pointer;transition:background .2s ease, color .2s ease;
+  }
+  .mode-toggle button.active{background:var(--indigo);color:var(--paper);}
+  .date-range-row{display:grid;grid-template-columns:1fr 1fr;gap:20px 24px;}
+  .days-readout{margin-top:12px;font-size:12.5px;color:var(--indigo-glow);font-family:'IBM Plex Mono',monospace;text-shadow:0 0 6px rgba(111,140,255,0.5);}
+  .multi-date-row{display:flex;gap:10px;align-items:flex-end;margin-bottom:14px;}
+  .multi-date-row .field{flex:1;}
+  .chip-list{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    display:flex;align-items:center;gap:8px;border:1px solid var(--indigo);
+    background:rgba(53,77,199,0.08);padding:7px 10px 7px 14px;font-size:13px;
+    font-family:'IBM Plex Mono',monospace;color:var(--paper);
+  }
+  .chip button{
+    background:none;border:none;color:var(--slate);cursor:pointer;font-size:14px;
+    line-height:1;padding:0;
+  }
+  .chip button:hover{color:var(--indigo-glow);}
+  .add-row-btn{
+    background:transparent;border:1px dashed var(--line);color:var(--slate);
+    padding:10px 16px;font-family:'IBM Plex Mono',monospace;font-size:12px;
+    letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;white-space:nowrap;
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .add-row-btn:hover{border-color:var(--indigo);color:var(--indigo-glow);}
+
+  /* ===== How It Works steps ===== */
+  .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);box-shadow:0 0 30px -8px rgba(53,77,199,0.35);}
+  .step-item{background:var(--bg);padding:36px 30px;position:relative;}
+  .step-num{font-family:'Bebas Neue',sans-serif;font-size:58px;color:var(--indigo-glow);text-shadow:0 0 14px rgba(111,140,255,0.6);line-height:1;}
+  .step-title{font-family:'Bebas Neue',sans-serif;font-size:23px;text-transform:uppercase;letter-spacing:0.02em;margin:14px 0 10px;}
+  .step-desc{font-size:14px;color:var(--slate);line-height:1.6;}
+  @media (max-width:860px){ .steps-grid{grid-template-columns:1fr;} }
+  .addon input{accent-color:var(--indigo);}
+  .booking-note{margin-top:28px;padding:16px 18px;border-left:2px solid var(--indigo);background:rgba(109,111,242,0.08);font-size:13.5px;color:var(--slate);line-height:1.6;}
+  .booking-submit{margin-top:28px;width:100%;justify-content:center;}
+  .confirm-msg{display:none;margin-top:20px;color:var(--indigo-glow);font-family:'IBM Plex Mono',monospace;font-size:13.5px;text-shadow:0 0 6px rgba(111,140,255,0.5);}
+
+  /* ===== CTA ===== */
+  .cta{
+    background:
+      radial-gradient(ellipse 700px 400px at 50% 0%, rgba(53,77,199,0.35), transparent 70%),
+      var(--panel);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    color:var(--paper);
+    text-align:center;
+    padding:130px 0;
+  }
+  .cta h2{
+    font-size:clamp(40px,7vw,88px);text-transform:uppercase;color:var(--paper);max-width:820px;margin:0 auto 28px;
+  }
+  .cta h2 em{
+    font-style:normal;color:var(--indigo-glow);
+    text-shadow:0 0 10px rgba(111,140,255,0.85), 0 0 30px rgba(53,77,199,0.6);
+  }
+  .cta p{font-size:16px;max-width:460px;margin:0 auto 40px;color:var(--slate);}
+  .cta .btn{background:var(--indigo);color:var(--paper);border-color:var(--indigo);}
+  .cta .btn:hover{background:transparent;color:var(--indigo-glow);box-shadow:0 0 22px rgba(53,77,199,0.8);}
+
+  /* ===== Footer ===== */
+  footer{padding:56px 0 40px;}
+  .footer-grid{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:30px;}
+  .footer-links{display:flex;gap:28px;flex-wrap:wrap;}
+  .footer-links a{font-size:13px;color:var(--slate);transition:color .2s ease;}
+  .footer-links a:hover{color:var(--indigo-glow);text-shadow:0 0 8px rgba(111,140,255,0.6);}
+  .footer-bottom{
+    margin-top:50px;padding-top:24px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;color:var(--slate);font-size:12px;flex-wrap:wrap;gap:10px;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 860px){
+    .navlinks .link{display:none;}
+    .about-grid{grid-template-columns:1fr;}
+    .cs-row{grid-template-columns:44px 1fr;}
+    .cs-row div:nth-child(3),.cs-row div:nth-child(4){grid-column:2;padding-top:0;}
+    .cs-row.head{display:none;}
+    .cs-row{padding:18px 0;}
+    .hero-meta{gap:24px;}
+    section{padding:80px 0;}
+    .package-panel{grid-template-columns:1fr;}
+    .package-price{border-right:none;border-bottom:1px solid var(--line);}
+    .carte-grid{grid-template-columns:1fr;}
+    .booking-grid{grid-template-columns:1fr;}
+    .addon-grid{grid-template-columns:1fr;}
+    .booking-panel{padding:28px;}
+  }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="wrap">
+    <nav>
+      <a href="#top" class="logo"><span class="dot"></span><span class="glitch" data-text="INDIGLOW LIGHTING">INDIGLOW LIGHTING</span></a>
+      <div class="navlinks">
+        <a href="#about" class="link">About</a>
+        <a href="#package" class="link">Package</a>
+        <a href="#how-it-works" class="link">How It Works</a>
+        <a href="#booking" class="btn">Book Now</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="wrap hero-content">
+    <div class="eyebrow mono">Grip &amp; Electric for Indie Productions · Los Angeles<span class="cursor-blink"></span></div>
+    <h1>Make Your Indie Films <em class="glitch" data-text="Glow.">Glow.</em></h1>
+    <p class="hero-sub">We get the indie struggle: doing more with less. Indiglow Lighting gives you the grip &amp; electric essentials your shoot actually needs, no production insurance, no long contracts, no ridiculous fees. Just book us and we'll be there with everything you need.</p>
+    <div class="hero-actions">
+      <a href="#booking" class="btn">Book Your Package</a>
+      <a href="#package" class="btn btn-outline">See What's Included</a>
+    </div>
+  </div>
+  <div class="wrap hero-meta">
+    <div>Based in<strong>Los Angeles, CA</strong></div>
+    <div>Package<strong>$250 Grip + Van · $50 Driver</strong></div>
+    <div>Delivery<strong>Straight To Your Set, Every Order</strong></div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="wrap about-grid">
+    <div class="about-photo reveal hud-corners">
+      <img src="van.jpg" alt="Indiglow Lighting van">
+      <div class="frame-tag mono">Indiglow · The Package</div>
+    </div>
+    <div class="about-body reveal">
+      <div class="section-tag mono">The Idea</div>
+      <h2 class="section-title" style="margin-bottom:26px;">The bare minimum,<br>done right.</h2>
+      <p>Most jobs don't need a ten ton grip truck and a crew of six. They need enough gear to get the shot right, without paying for the overhead, insurance paperwork, and padded contracts a full scale package comes with.</p>
+      <p class="dim">Indiglow Lighting exists for that gap. One compact half-ton package with all the basic grip gear you actually use, plus lighting units you add on when the job calls for it. We know indie budgets are tight, that's the whole idea: get more done for less. No insurance requirements, no long contracts, no ridiculous fees, and every order is delivered straight to your shooting location. Add us to your call sheet and we follow schedule and location changes like the rest of your crew. Just book us and we'll be there with everything you need.</p>
+      <div class="about-stats">
+        <div><strong>$250</strong><span class="mono">Grip + Van</span></div>
+        <div><strong>½ Ton</strong><span class="mono">Compact Load</span></div>
+        <div><strong>Direct</strong><span class="mono">To Your Set</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="package">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="section-tag mono">The Package</div>
+        <h2 class="section-title">Flat rate. Van included.</h2>
+      </div>
+      <p class="section-desc">One package, one price. Add lighting units in the booking form when the shot calls for it.</p>
+    </div>
+    <div class="package-panel reveal hud-corners">
+      <div class="package-price">
+        <div class="name">Grip Only + Van</div>
+        <div class="price-row">
+          <div class="amount">$250</div>
+        </div>
+        <div class="price-fee">+ $50 driver fee</div>
+        <p class="price-desc">Flat rate for the day. Covers the compact half-ton package and delivery van, enough grip gear to support interviews, music videos, and short commercial work. No insurance requirements, no long contracts, no ridiculous fees.</p>
+        <a href="#booking" class="btn">Book This Package</a>
+      </div>
+      <div class="package-includes">
+        <div class="name">What's In The Van</div>
+        <ul class="inc-list">
+          <li><span class="chk">✓</span> Stands: 40" &amp; 20" C-stands, baby &amp; combo stands, boom arm, caster wheels</li>
+          <li><span class="chk">✓</span> Frame Kit &amp; Fabrics: 12x12' &amp; 6x6' silks, solids, grids, muslin, ultrabounce</li>
+          <li><span class="chk">✓</span> Flags: solid, single net, double net, silk (24x36")</li>
+          <li><span class="chk">✓</span> Floppies &amp; Diffusion: opal, ¼ white, ½ white, full white</li>
+          <li><span class="chk">✓</span> Clamps &amp; Clips: Cardellini, Mafer, pipe clamps, C-clamps</li>
+          <li><span class="chk">✓</span> Apple Boxes (full set) &amp; Sandbags (25lb, 35lb, 20lb)</li>
+          <li><span class="chk">✓</span> Stingers: 4x 25', 4x 50'</li>
+          <li><span class="chk">✓</span> Misc: tennis balls, straps, black wrap, cribbing, tie-downs, safety chains</li>
+        </ul>
+        <a href="#full-manifest" class="mono" style="display:inline-block;margin-top:20px;font-size:12px;color:var(--indigo);letter-spacing:0.06em;">See Full Manifest ↓</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="full-manifest">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="section-tag mono">Full Manifest</div>
+        <h2 class="section-title">Every piece, itemized.</h2>
+      </div>
+      <p class="section-desc">The complete grip inventory that ships with every package.</p>
+    </div>
+    <div class="manifest-grid reveal hud-corners">
+      <div class="manifest-cat">
+        <div class="manifest-cat-name mono">Stands</div>
+        <ul class="man-list">
+          <li><span>7</span>40" C-Stands</li>
+          <li><span>1</span>20" C-Stands</li>
+          <li><span>4</span>Baby Combo Stands</li>
+          <li><span>2</span>2-Riser Combo Stands</li>
+          <li><span>2</span>3-Riser Combo Stands</li>
+          <li><span>1</span>Baby Boom Extension Arm</li>
+          <li><span>4</span>Sets of 3 Caster Wheels (Baby Stands)</li>
+          <li><span>4</span>Sets of 3 Caster Wheels (Combo Stands)</li>
+        </ul>
+      </div>
+      <div class="manifest-cat">
+        <div class="manifest-cat-name mono">Frame Kit &amp; Fabrics</div>
+        <ul class="man-list">
+          <li><span>1</span>12x12' Frame Kit (breaks to 6x6')</li>
+          <li><span>1</span>12x12' Ultra Bounce</li>
+          <li><span>1</span>12x12' ¼ Grid</li>
+          <li><span>1</span>6x6' Solid</li>
+          <li><span>1</span>6x6' ¼ Grid</li>
+          <li><span>1</span>6x6' China Silk</li>
+          <li><span>1</span>6x6' Bleached Muslin</li>
+          <li><span>1</span>6x6' Ultra Bounce</li>
+        </ul>
+      </div>
+      <div class="manifest-cat">
+        <div class="manifest-cat-name mono">Floppies &amp; Diffusion</div>
+        <ul class="man-list">
+          <li><span>4</span>Solid Floppy</li>
+          <li><span>2</span>Ultrabounce Floppy</li>
+          <li><span>1</span>4x4' 410 Opal Frost</li>
+          <li><span>1</span>4x4' 251 ¼ White</li>
+          <li><span>1</span>4x4' 250 Half White</li>
+          <li><span>1</span>4x4' 216 Full White</li>
+        </ul>
+      </div>
+      <div class="manifest-cat">
+        <div class="manifest-cat-name mono">Flags</div>
+        <ul class="man-list">
+          <li><span>2</span>24x36" Solid Flag</li>
+          <li><span>1</span>24x36" Single Net Flag</li>
+          <li><span>1</span>24x36" Double Net Flag</li>
+          <li><span>1</span>24x36" Silk Flag</li>
+        </ul>
+      </div>
+      <div class="manifest-cat">
+        <div class="manifest-cat-name mono">Clamps &amp; Clips</div>
+        <ul class="man-list">
+          <li><span>2</span>Cardellini Clamp</li>
+          <li><span>2</span>Mafer Clamp</li>
+          <li><span>2</span>Baby Pipe Clamp</li>
+          <li><span>2</span>Junior Pipe Clamp</li>
+          <li><span>2</span>C-Clamp</li>
+          <li><span>8</span>#3 Clip</li>
+          <li><span>10</span>#2 Clip</li>
+          <li><span>10</span>#1 Clip</li>
+        </ul>
+      </div>
+      <div class="manifest-cat">
+        <div class="manifest-cat-name mono">Apple Boxes</div>
+        <ul class="man-list">
+          <li><span>2</span>Full Apple</li>
+          <li><span>1</span>½ Apple</li>
+          <li><span>1</span>¼ Apple</li>
+          <li><span>1</span>⅛ Apple (Pancake)</li>
+        </ul>
+      </div>
+      <div class="manifest-cat">
+        <div class="manifest-cat-name mono">Sandbags</div>
+        <ul class="man-list">
+          <li><span>4</span>25lb Sandbags</li>
+          <li><span>2</span>35lb Sandbags</li>
+          <li><span>4</span>20lb Sandbags</li>
+        </ul>
+      </div>
+      <div class="manifest-cat">
+        <div class="manifest-cat-name mono">Stingers</div>
+        <ul class="man-list">
+          <li><span>4</span>25' Stingers</li>
+          <li><span>4</span>50' Stingers</li>
+        </ul>
+      </div>
+      <div class="manifest-cat">
+        <div class="manifest-cat-name mono">Misc</div>
+        <ul class="man-list">
+          <li><span>16</span>Sliced Tennis Balls</li>
+          <li><span>2</span>Ratchet Straps</li>
+          <li><span>•</span>Black Wrap</li>
+          <li><span>•</span>Cribbing Wood</li>
+          <li><span>4</span>25' Tie-Down Lines</li>
+          <li><span>10</span>Safety Chains</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how-it-works">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="section-tag mono">No Headache Checkout</div>
+        <h2 class="section-title">Booked in three steps.</h2>
+      </div>
+      <p class="section-desc">Quick, easy, instant: fill it out, get confirmed, gear shows up.</p>
+    </div>
+    <div class="steps-grid reveal hud-corners">
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <div class="step-title">Fill Out The Form</div>
+        <div class="step-desc">Pick your package, lighting, crew, and shoot details. See your estimated total instantly, right on the page.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <div class="step-title">Confirm Via Email</div>
+        <div class="step-desc">We lock in your dates and confirm by email. Add us to your call sheet and we follow schedule and location updates like the rest of your crew.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <div class="step-title">You're Done</div>
+        <div class="step-desc">Gear is delivered straight to your shooting location, ready to roll. Show up, shoot, wrap.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="booking" id="booking">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="section-tag mono">Book</div>
+        <h2 class="section-title">Lock in your date.</h2>
+      </div>
+      <p class="section-desc">No headache checkout: fill out the form, confirm by email, you're done.</p>
+    </div>
+    <div class="booking-panel reveal hud-corners">
+      <form id="bookingForm">
+        <div class="booking-grid">
+          <div class="field">
+            <label for="name">Name</label>
+            <input id="name" type="text" required>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" required>
+          </div>
+          <div class="field">
+            <label for="phone">Phone</label>
+            <input id="phone" type="tel" required>
+          </div>
+          <div class="field full">
+            <label>Package</label>
+            <div class="addon-grid">
+              <label class="addon"><input type="checkbox" class="quote-input" data-price="250" data-label="Grip Package + Van"> Grip Package + Van · $250/day</label>
+              <div class="addon-qty">
+                <span>Driver &amp; Delivery Fee <span style="color:var(--slate);">(every order ships straight to your set)</span></span>
+                <span class="mono" style="color:var(--indigo-glow);font-size:12px;letter-spacing:0.06em;text-shadow:0 0 6px rgba(111,140,255,0.5);">$50 · Required</span>
+              </div>
+            </div>
+          </div>
+          <div class="field full">
+            <label>Shoot Dates</label>
+            <div class="mode-toggle" id="dateModeToggle">
+              <button type="button" class="active" data-mode="range">Date Range</button>
+              <button type="button" data-mode="multiple">Multiple Dates</button>
+            </div>
+
+            <div id="rangeMode">
+              <div class="date-range-row">
+                <div class="field">
+                  <label for="rangeStart">Start Date</label>
+                  <input id="rangeStart" type="date" required>
+                </div>
+                <div class="field">
+                  <label for="rangeEnd">End Date</label>
+                  <input id="rangeEnd" type="date" required>
+                </div>
+              </div>
+              <div class="days-readout" id="rangeDaysReadout">1 shoot day</div>
+            </div>
+
+            <div id="multiMode" style="display:none;">
+              <div class="multi-date-row">
+                <div class="field">
+                  <label for="multiDateInput">Add A Date</label>
+                  <input id="multiDateInput" type="date">
+                </div>
+                <button type="button" class="add-row-btn" id="addDateBtn">+ Add Date</button>
+              </div>
+              <div class="chip-list" id="dateChips"></div>
+            </div>
+          </div>
+          <div class="field full">
+            <label>Add-On Lighting (optional)</label>
+            <div class="addon-grid">
+              <label class="addon"><input type="checkbox" class="quote-input" data-price="85" data-label="Aputure Storm 1200x"> Aputure Storm 1200x · $85/day</label>
+              <label class="addon"><input type="checkbox" class="quote-input" data-price="75" data-label="Aputure Storm 700x"> Aputure Storm 700x · $75/day</label>
+              <label class="addon"><input type="checkbox" class="quote-input" data-price="60" data-label="Aputure Storm 400x"> Aputure Storm 400x · $60/day</label>
+              <label class="addon"><input type="checkbox" class="quote-input" data-price="80" data-label="Aputure Storm 80c (3-Light Kit)"> Aputure Storm 80c (3-Light Kit) · $80/day</label>
+              <label class="addon"><input type="checkbox" class="quote-input" data-price="30" data-label="Aputure B7c 8-Bulb Kit"> Aputure B7c 8-Bulb Kit · $30/day</label>
+              <label class="addon"><input type="checkbox" class="quote-input" data-price="20" data-label="Aputure MC 4-Light Kit"> Aputure MC 4-Light Kit · $20/day</label>
+              <label class="addon"><input type="checkbox" class="quote-input" data-price="45" data-label="Amaran F22c"> Amaran F22c · $45/day</label>
+              <label class="addon"><input type="checkbox" class="quote-input" data-price="70" data-label="Infinibars w/ Diffusion (2)"> Infinibars w/ Diffusion (2) · $70/day</label>
+              <label class="addon" style="grid-column:1/-1;border-color:var(--indigo);"><input type="checkbox" class="quote-input" data-price="350" data-label="Full Light Package (all units)"> Full Light Package (all units) · $350/day</label>
+            </div>
+            <div class="mono" style="font-size:11px;color:var(--slate);margin-top:22px;margin-bottom:10px;letter-spacing:0.08em;">Modifiers</div>
+            <div class="addon-grid">
+              <label class="addon"><input type="checkbox" class="quote-input" data-price="15" data-label="Aputure Light Dome II"> Aputure Light Dome II · $15/day</label>
+              <label class="addon"><input type="checkbox" class="quote-input" data-price="20" data-label="Aputure Light Dome 150"> Aputure Light Dome 150 · $20/day</label>
+              <label class="addon"><input type="checkbox" class="quote-input" data-price="25" data-label="Spotlight 36°"> Spotlight 36° · $25/day</label>
+            </div>
+          </div>
+          <div class="field full">
+            <label>Crew (optional)</label>
+            <div class="addon-grid">
+              <label class="addon"><input type="checkbox" class="quote-input" data-price="600" data-label="Gaffer (Chief Lighting Technician)"> Gaffer (Chief Lighting Technician) · $600/day</label>
+              <label class="addon"><input type="checkbox" class="quote-input" data-price="600" data-label="Key Grip"> Key Grip · $600/day</label>
+              <div class="addon-qty" style="grid-column:1/-1;">
+                <span>Grip / Electric / Swing · $450/day each</span>
+                <div class="qty-controls">
+                  <input type="number" id="swingQty" class="quote-input" data-price="450" data-label="Grip / Electric / Swing" min="0" max="10" value="0">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field full">
+            <label for="notes">Notes</label>
+            <textarea id="notes" rows="3" placeholder="Location, shoot length, anything we should know"></textarea>
+          </div>
+        </div>
+
+        <div class="quote-panel">
+          <div class="quote-head">Estimated Quote</div>
+          <div class="quote-lines" id="quoteLines">
+            <div class="quote-empty">Select a package, lighting, or crew above to see your estimate.</div>
+          </div>
+          <div class="quote-total-row">
+            <span class="quote-total-label">Total / Day</span>
+            <span class="quote-total-amount" id="quoteTotal">$0</span>
+          </div>
+          <div class="quote-fineprint">Estimate only. Final quote confirmed upon booking.</div>
+        </div>
+
+        <div class="booking-note" style="border-left-color:var(--cyan);">
+          <strong>Add us to your call sheet.</strong> Shoot times and locations change, that's just how sets run. Add hello@indiglowlighting.com to your call sheet distribution and any crew email or text threads. We'll follow schedule and location updates the same way the rest of your crew does, no separate coordination needed.
+        </div>
+
+        <div class="booking-note">
+          <strong>Note:</strong> This form captures your request instantly, but automatic Google Calendar sync requires a backend booking service (e.g. a Calendly/Cal.com embed, or a custom integration with the Google Calendar API). Wire this form's submit handler to whichever service you choose.
+        </div>
+
+        <button type="submit" class="btn booking-submit">Request Booking</button>
+        <div class="confirm-msg" id="confirmMsg">✓ Request captured. Once calendar sync is connected, this will confirm instantly.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="contact">
+  <div class="wrap">
+    <div class="section-tag mono">Let's Talk</div>
+    <h2>Don't See What You <em>Need</em>?</h2>
+    <p>If your shoot calls for gear that's not on our list, or you've got questions about how booking, delivery, or the process actually works, just reach out. We're happy to sort it out.</p>
+    <a href="mailto:hello@indiglowlighting.com" class="btn">Email Indiglow</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="logo"><span class="dot"></span>INDIGLOW LIGHTING</div>
+      <div class="footer-links mono">
+        <a href="#about">About</a>
+        <a href="#package">Package</a>
+        <a href="#booking">Book</a>
+        <a href="mailto:hello@indiglowlighting.com">Email</a>
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener">[Instagram]</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>indiglowlighting.com</span>
+      <span>Los Angeles, CA</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.12});
+  revealEls.forEach(el => io.observe(el));
+
+  document.getElementById('bookingForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    document.getElementById('confirmMsg').style.display = 'block';
+  });
+
+  const DRIVER_FEE = 50;
+
+  function getShootDays(){
+    if(dateMode === 'range'){
+      const start = document.getElementById('rangeStart').value;
+      const end = document.getElementById('rangeEnd').value;
+      if(start && end){
+        const d1 = new Date(start);
+        const d2 = new Date(end);
+        const diff = Math.round((d2 - d1) / 86400000) + 1;
+        return diff > 0 ? diff : 1;
+      }
+      return 1;
+    }
+    return Math.max(1, selectedDates.length);
+  }
+
+  function updateQuote(){
+    const inputs = document.querySelectorAll('.quote-input');
+    let perDayTotal = 0;
+    const lines = [];
+    inputs.forEach(el => {
+      const price = parseFloat(el.dataset.price) || 0;
+      const label = el.dataset.label || '';
+      if(el.type === 'checkbox'){
+        if(el.checked){
+          perDayTotal += price;
+          lines.push({label, amount: price});
+        }
+      } else if(el.type === 'number'){
+        const qty = parseInt(el.value, 10) || 0;
+        if(qty > 0){
+          const amount = price * qty;
+          perDayTotal += amount;
+          lines.push({label: `${label} ×${qty}`, amount});
+        }
+      }
+    });
+
+    const days = getShootDays();
+
+    const linesEl = document.getElementById('quoteLines');
+    const totalEl = document.getElementById('quoteTotal');
+
+    if(lines.length === 0){
+      linesEl.innerHTML = '<div class="quote-empty">Select a package, lighting, or crew above to see your estimate.</div>';
+    } else {
+      linesEl.innerHTML = lines.map(l =>
+        `<div class="quote-line"><span>${l.label}</span><span>$${l.amount.toLocaleString()}/day</span></div>`
+      ).join('') +
+      `<div class="quote-line"><span>Subtotal × ${days} Shoot Day${days > 1 ? 's' : ''}</span><span>$${(perDayTotal * days).toLocaleString()}</span></div>` +
+      `<div class="quote-line"><span>Driver &amp; Delivery Fee (required)</span><span>$${DRIVER_FEE}</span></div>`;
+    }
+
+    const total = (perDayTotal * days) + DRIVER_FEE;
+    totalEl.textContent = '$' + total.toLocaleString();
+  }
+  document.querySelectorAll('.quote-input').forEach(el => {
+    el.addEventListener('change', updateQuote);
+    el.addEventListener('input', updateQuote);
+  });
+
+  /* ===== Date mode toggle (range vs multiple independent dates) ===== */
+  let dateMode = 'range';
+  let selectedDates = [];
+
+  const rangeModeEl = document.getElementById('rangeMode');
+  const multiModeEl = document.getElementById('multiMode');
+  const rangeStartEl = document.getElementById('rangeStart');
+  const rangeEndEl = document.getElementById('rangeEnd');
+  const rangeDaysReadout = document.getElementById('rangeDaysReadout');
+  const dateChipsEl = document.getElementById('dateChips');
+  const multiDateInput = document.getElementById('multiDateInput');
+
+  document.querySelectorAll('#dateModeToggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      dateMode = btn.dataset.mode;
+      document.querySelectorAll('#dateModeToggle button').forEach(b => b.classList.toggle('active', b === btn));
+      rangeModeEl.style.display = dateMode === 'range' ? 'block' : 'none';
+      multiModeEl.style.display = dateMode === 'multiple' ? 'block' : 'none';
+      updateQuote();
+    });
+  });
+
+  function updateRangeReadout(){
+    const days = getShootDays();
+    rangeDaysReadout.textContent = `${days} shoot day${days > 1 ? 's' : ''}`;
+  }
+  rangeStartEl.addEventListener('change', () => { updateRangeReadout(); updateQuote(); });
+  rangeEndEl.addEventListener('change', () => { updateRangeReadout(); updateQuote(); });
+
+  function renderDateChips(){
+    dateChipsEl.innerHTML = selectedDates.map((d, i) => {
+      const label = new Date(d + 'T00:00:00').toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+      return `<div class="chip">${label}<button type="button" data-idx="${i}" aria-label="Remove date">×</button></div>`;
+    }).join('');
+    dateChipsEl.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        selectedDates.splice(parseInt(btn.dataset.idx, 10), 1);
+        renderDateChips();
+        updateQuote();
+      });
+    });
+  }
+
+  document.getElementById('addDateBtn').addEventListener('click', () => {
+    const val = multiDateInput.value;
+    if(val && !selectedDates.includes(val)){
+      selectedDates.push(val);
+      selectedDates.sort();
+      renderDateChips();
+      multiDateInput.value = '';
+      updateQuote();
+    }
+  });
+
+  updateRangeReadout();
+  updateQuote();
+</script>
+
+</body>
+</html>
