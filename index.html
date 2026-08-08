@@ -464,13 +464,42 @@
     .cs-row.head{display:none;}
     .cs-row{padding:18px 0;}
     .hero-meta{gap:24px;}
-    section{padding:80px 0;}
+    section{padding:70px 0;}
     .package-panel{grid-template-columns:1fr;}
     .package-price{border-right:none;border-bottom:1px solid var(--line);}
     .carte-grid{grid-template-columns:1fr;}
     .booking-grid{grid-template-columns:1fr;}
     .addon-grid{grid-template-columns:1fr;}
     .booking-panel{padding:28px;}
+    .date-range-row{grid-template-columns:1fr;gap:16px;}
+    .package-price, .package-includes{padding:32px;}
+    .manifest-cat{padding:24px 22px;}
+    .step-item{padding:28px 24px;}
+    .cta{padding:80px 0;}
+    .hero{padding-top:100px;padding-bottom:60px;}
+    .price-row .amount{font-size:64px;}
+  }
+
+  @media (max-width: 560px){
+    .wrap{padding:0 20px;}
+    .logo{
+      font-size:15px;letter-spacing:0.06em;
+      padding:7px 13px 7px 10px;gap:7px;
+    }
+    .logo .dot{width:7px;height:7px;}
+    header .btn{padding:9px 14px;font-size:10px;}
+    .hero-actions{flex-direction:column;align-items:stretch;}
+    .hero-actions .btn{justify-content:center;}
+    .multi-date-row{flex-direction:column;align-items:stretch;}
+    .addon-qty{flex-wrap:wrap;row-gap:10px;}
+    .addon-qty .qty-controls{width:100%;justify-content:flex-end;}
+    .package-price, .package-includes{padding:24px;}
+    .step-item{padding:24px 20px;}
+    .step-num{font-size:44px;}
+    .price-row .amount{font-size:54px;}
+    .manifest-cat{padding:20px 18px;}
+    .booking-panel{padding:20px;}
+    .footer-grid{gap:22px;}
   }
 </style>
 </head>
