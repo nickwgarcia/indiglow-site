@@ -827,16 +827,27 @@
               <button type="button" data-crew="yes">Yes</button>
             </div>
             <div id="crewSelectWrap" style="display:none;">
-              <select id="crewPosition">
-                <option value="">Select a position</option>
-                <option>Gaffer</option>
-                <option>Key Grip</option>
-                <option>Best Boy Grip</option>
-                <option>Best Boy Electric</option>
-                <option>Grip</option>
-                <option>Electric</option>
-                <option>Swing</option>
-              </select>
+              <div class="multi-date-row">
+                <div class="field">
+                  <label for="crewPosition">Position</label>
+                  <select id="crewPosition">
+                    <option value="">Select a position</option>
+                    <option>Gaffer</option>
+                    <option>Key Grip</option>
+                    <option>Best Boy Grip</option>
+                    <option>Best Boy Electric</option>
+                    <option>Grip</option>
+                    <option>Electric</option>
+                    <option>Swing</option>
+                  </select>
+                </div>
+                <div class="field" id="crewQtyWrap" style="display:none;max-width:100px;">
+                  <label for="crewQty">Qty</label>
+                  <input type="number" id="crewQty" min="1" max="10" value="1">
+                </div>
+                <button type="button" class="add-row-btn" id="addCrewBtn">+ Add</button>
+              </div>
+              <div class="chip-list" id="crewChips"></div>
               <div class="mono" style="font-size:11px;color:var(--slate);margin-top:12px;line-height:1.6;">Rates are subject to individual crew rates and/or project budget. We'll connect you directly to negotiate.</div>
             </div>
           </div>
@@ -1042,6 +1053,42 @@
       document.querySelectorAll('#crewModeToggle button').forEach(b => b.classList.toggle('active', b === btn));
       crewSelectWrap.style.display = btn.dataset.crew === 'yes' ? 'block' : 'none';
     });
+  });
+
+  const crewPositionEl = document.getElementById('crewPosition');
+  const crewQtyWrap = document.getElementById('crewQtyWrap');
+  const crewQtyEl = document.getElementById('crewQty');
+  const crewChipsEl = document.getElementById('crewChips');
+  const addCrewBtn = document.getElementById('addCrewBtn');
+  const qtyEligible = ['Grip', 'Electric', 'Swing'];
+  let crewList = [];
+
+  crewPositionEl.addEventListener('change', () => {
+    crewQtyWrap.style.display = qtyEligible.includes(crewPositionEl.value) ? 'block' : 'none';
+    crewQtyEl.value = 1;
+  });
+
+  function renderCrewChips(){
+    crewChipsEl.innerHTML = crewList.map((c, i) => {
+      const label = c.qty > 1 ? `${c.qty} ${c.position}s` : c.position;
+      return `<div class="chip">${label}<button type="button" data-idx="${i}" aria-label="Remove">×</button></div>`;
+    }).join('');
+  }
+  addCrewBtn.addEventListener('click', () => {
+    const position = crewPositionEl.value;
+    if(!position) return;
+    const qty = qtyEligible.includes(position) ? parseInt(crewQtyEl.value, 10) || 1 : 1;
+    crewList.push({position, qty});
+    renderCrewChips();
+    crewPositionEl.value = '';
+    crewQtyWrap.style.display = 'none';
+    crewQtyEl.value = 1;
+  });
+  crewChipsEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-idx]');
+    if(!btn) return;
+    crewList.splice(parseInt(btn.dataset.idx, 10), 1);
+    renderCrewChips();
   });
 
   function renderDateChips(){
