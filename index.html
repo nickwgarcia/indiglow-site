@@ -171,6 +171,67 @@
   }
   .btn-outline:hover{border-color:var(--pink);color:var(--pink);box-shadow:0 0 16px rgba(255,61,143,0.5);}
 
+  /* ===== Hamburger (mobile nav trigger) ===== */
+  .hamburger{
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    width:40px;height:40px;
+    padding:0;
+    background:transparent;
+    border:1px solid var(--line);
+    cursor:pointer;
+    flex-shrink:0;
+    position:relative;
+    z-index:210;
+  }
+  .hamburger span{
+    display:block;width:20px;height:2px;background:var(--paper);
+    transition:transform .3s ease, opacity .2s ease, background .3s ease;
+  }
+  .hamburger.active span:nth-child(1){transform:translateY(7px) rotate(45deg);background:var(--pink);}
+  .hamburger.active span:nth-child(2){opacity:0;}
+  .hamburger.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg);background:var(--pink);}
+  .hamburger:focus-visible{outline:1px solid var(--indigo-glow);outline-offset:3px;}
+
+  /* ===== Mobile nav drawer ===== */
+  .mobile-nav-backdrop{
+    position:fixed;inset:0;z-index:190;
+    background:rgba(5,6,10,0.65);
+    opacity:0;pointer-events:none;
+    transition:opacity .3s ease;
+  }
+  .mobile-nav-backdrop.open{opacity:1;pointer-events:auto;}
+  .mobile-nav{
+    position:fixed;top:0;right:0;bottom:0;z-index:200;
+    width:min(80vw,320px);
+    background:rgba(10,11,18,0.98);
+    backdrop-filter:blur(14px);
+    border-left:1px solid var(--line);
+    box-shadow:-12px 0 40px rgba(0,0,0,0.5);
+    display:flex;flex-direction:column;
+    padding:110px 30px 40px;
+    gap:2px;
+    transform:translateX(100%);
+    transition:transform .35s ease;
+    overflow-y:auto;
+  }
+  .mobile-nav.open{transform:translateX(0);}
+  .mobile-nav .mobile-link{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:15px;letter-spacing:0.06em;text-transform:uppercase;
+    color:var(--paper);
+    padding:18px 2px;
+    border-bottom:1px solid var(--line);
+    transition:color .2s ease;
+  }
+  .mobile-nav .mobile-link:active,
+  .mobile-nav .mobile-link:focus-visible{color:var(--indigo-glow);text-shadow:0 0 8px rgba(143,240,252,0.6);}
+  .mobile-nav .mobile-book-btn{margin-top:26px;justify-content:center;text-align:center;}
+  body.nav-open{overflow:hidden;}
+
   /* ===== Hero ===== */
   .hero{
     position:relative;
@@ -463,6 +524,8 @@
   /* ===== Responsive ===== */
   @media (max-width: 860px){
     .navlinks .link{display:none;}
+    .navlinks .btn{display:none;}
+    .hamburger{display:flex;}
     .about-grid{grid-template-columns:1fr;}
     .cs-row{grid-template-columns:44px 1fr;}
     .cs-row div:nth-child(3),.cs-row div:nth-child(4){grid-column:2;padding-top:0;}
@@ -472,6 +535,7 @@
     section{padding:70px 0;}
     .package-panel{grid-template-columns:1fr;}
     .package-price{border-right:none;border-bottom:1px solid var(--line);}
+    .package-price .btn{width:100%;justify-content:center;}
     .carte-grid{grid-template-columns:1fr;}
     .booking-grid{grid-template-columns:1fr;}
     .addon-grid{grid-template-columns:1fr;}
@@ -481,14 +545,19 @@
     .manifest-cat{padding:24px 22px;}
     .step-item{padding:28px 24px;}
     .cta{padding:80px 0;}
+    .cta .btn{width:100%;max-width:360px;justify-content:center;}
     .hero{padding-top:100px;padding-bottom:60px;}
     .price-row .amount{font-size:64px;}
+    footer .vegas-logo{height:70px;}
+    .footer-grid{flex-direction:column;align-items:center;text-align:center;gap:24px;}
+    .footer-links{justify-content:center;}
+    .footer-bottom{flex-direction:column;text-align:center;gap:8px;}
   }
 
   @media (max-width: 560px){
     .wrap{padding:0 20px;}
-    .vegas-logo{ height:56px; }
-    header .btn{padding:9px 14px;font-size:10px;}
+    .vegas-logo{ height:48px; }
+    .hamburger{width:36px;height:36px;}
     .hero-actions{flex-direction:column;align-items:stretch;}
     .hero-actions .btn{justify-content:center;}
     .multi-date-row{flex-direction:column;align-items:stretch;}
@@ -501,6 +570,8 @@
     .manifest-cat{padding:20px 18px;}
     .booking-panel{padding:20px;}
     .footer-grid{gap:22px;}
+    footer .vegas-logo{height:56px;}
+    .mobile-nav{width:82vw;padding:96px 24px 32px;}
   }
 </style>
 </head>
@@ -518,8 +589,20 @@
         <a href="#how-it-works" class="link">How It Works</a>
         <a href="#booking" class="btn">Book Now</a>
       </div>
+      <button class="hamburger" id="hamburgerBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+        <span></span><span></span><span></span>
+      </button>
     </nav>
   </div>
+  <div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
+  <nav class="mobile-nav" id="mobileNav" aria-hidden="true">
+    <a href="#about" class="mobile-link">About</a>
+    <a href="#package" class="mobile-link">Package</a>
+    <a href="#how-it-works" class="mobile-link">How It Works</a>
+    <a href="#full-manifest" class="mobile-link">Full Manifest</a>
+    <a href="#contact" class="mobile-link">Contact</a>
+    <a href="#booking" class="btn mobile-book-btn">Book Now</a>
+  </nav>
 </header>
 
 <section class="hero" id="top">
@@ -918,6 +1001,39 @@
   const header = document.getElementById('siteHeader');
   window.addEventListener('scroll', () => {
     header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  /* ===== Mobile hamburger nav ===== */
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  const mobileNavBackdrop = document.getElementById('mobileNavBackdrop');
+
+  function openMobileNav(){
+    hamburgerBtn.classList.add('active');
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+    mobileNav.classList.add('open');
+    mobileNav.setAttribute('aria-hidden', 'false');
+    mobileNavBackdrop.classList.add('open');
+    document.body.classList.add('nav-open');
+  }
+  function closeMobileNav(){
+    hamburgerBtn.classList.remove('active');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    mobileNav.classList.remove('open');
+    mobileNav.setAttribute('aria-hidden', 'true');
+    mobileNavBackdrop.classList.remove('open');
+    document.body.classList.remove('nav-open');
+  }
+  hamburgerBtn.addEventListener('click', () => {
+    mobileNav.classList.contains('open') ? closeMobileNav() : openMobileNav();
+  });
+  mobileNavBackdrop.addEventListener('click', closeMobileNav);
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileNav));
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') closeMobileNav();
+  });
+  window.addEventListener('resize', () => {
+    if(window.innerWidth > 860) closeMobileNav();
   });
 
   const revealEls = document.querySelectorAll('.reveal');
