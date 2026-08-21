@@ -520,6 +520,21 @@
     margin-top:50px;padding-top:24px;border-top:1px solid var(--line);
     display:flex;justify-content:space-between;color:var(--slate);font-size:12px;flex-wrap:wrap;gap:10px;
   }
+  .footer-contact{
+    margin-top:34px;padding-top:26px;border-top:1px solid var(--line);
+    display:flex;justify-content:center;align-items:center;gap:36px;flex-wrap:wrap;
+    font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:0.04em;
+  }
+  .footer-contact .fc-item{display:flex;align-items:center;gap:8px;color:var(--slate);}
+  .footer-contact .fc-label{text-transform:uppercase;font-size:11px;letter-spacing:0.1em;color:var(--slate);}
+  .footer-contact a{
+    color:var(--indigo-glow);text-shadow:0 0 6px rgba(143,240,252,0.5);
+    text-decoration:none;font-weight:500;
+  }
+  .footer-contact a:hover{color:var(--pink);text-shadow:0 0 10px rgba(255,61,143,0.7);}
+  @media (max-width: 560px){
+    .footer-contact{flex-direction:column;gap:14px;text-align:center;}
+  }
 
   /* ===== Responsive ===== */
   @media (max-width: 860px){
@@ -953,7 +968,7 @@
         </div>
 
         <div class="booking-note" style="border-left-color:var(--pink);">
-          <strong>Add us to your call sheet.</strong> Shoot times and locations change, that's just how sets run. Add hello@indiglowlighting.com to your call sheet distribution and any crew email or text threads. We'll follow schedule and location updates the same way the rest of your crew does, no separate coordination needed.
+          <strong>Add us to your call sheet.</strong> Shoot times and locations change, that's just how sets run. Add info@indiglowlighting.com to your call sheet distribution and any crew email or text threads. We'll follow schedule and location updates the same way the rest of your crew does, no separate coordination needed.
         </div>
 
         <div class="booking-note">
@@ -972,7 +987,7 @@
     <div class="section-tag mono">Let's Talk</div>
     <h2>Don't See What You <em>Need</em>?</h2>
     <p>If your shoot calls for gear that's not on our list, or you've got questions about how booking, delivery, or the process actually works, just reach out. We're happy to sort it out.</p>
-    <a href="mailto:hello@indiglowlighting.com" class="btn">Email Indiglow</a>
+    <a href="mailto:info@indiglowlighting.com" class="btn">Email Indiglow</a>
   </div>
 </section>
 
@@ -986,9 +1001,13 @@
         <a href="#about">About</a>
         <a href="#package">Package</a>
         <a href="#booking">Book</a>
-        <a href="mailto:hello@indiglowlighting.com">Email</a>
+        <a href="mailto:info@indiglowlighting.com">Email</a>
         <a href="https://www.instagram.com/" target="_blank" rel="noopener">[Instagram]</a>
       </div>
+    </div>
+    <div class="footer-contact">
+      <div class="fc-item"><span class="fc-label">Email</span><a href="mailto:info@indiglowlighting.com">info@indiglowlighting.com</a></div>
+      <div class="fc-item"><span class="fc-label">Phone</span><a href="tel:+18183054322">818-305-4322</a></div>
     </div>
     <div class="footer-bottom">
       <span>indiglowlighting.com</span>
