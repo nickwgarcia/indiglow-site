@@ -647,7 +647,7 @@
       <div class="section-tag mono">The Idea</div>
       <h2 class="section-title" style="margin-bottom:26px;">Everything you need,<br>nothing you don't.</h2>
       <p>Most small productions don't need a ten-ton grip truck and a crew of six. They need dependable gear that gets the shot right, without paying for the overhead a full-scale package brings.</p>
-      <p class="dim">That's what our one-ton package is built for: everything most small productions need, plus lighting units you can add when the job calls for it. We think of it as resourcefulness, getting the most out of the right tools instead of hauling around gear you'll never touch. If a job calls for something more specialized, we're equipped to handle it; just tell us what you need and we'll source it. Every order delivers straight to your set, and once we're on your call sheet, we track schedule and location changes right along with the rest of your crew.</p>
+      <p class="dim">That's what our one-ton package is built for: everything most small productions need, plus lighting units you can add when the job calls for it. We think of it as resourcefulness, getting the most out of the right tools instead of hauling around gear you'll never touch. If a job calls for something more specialized, we're equipped to handle it; just tell us what you need and we'll source it.</p>
       <div class="about-stats">
         <div><strong>$250</strong><span class="mono">Grip + Van</span></div>
         <div><strong>1 Ton</strong><span class="mono">Compact Load</span></div>
@@ -942,23 +942,7 @@
         </div>
 
         <div class="booking-note" id="gripVanDepositWrap" style="display:none;border-left-color:var(--pink);">
-          <strong>Grip Package + Van &mdash; digital signature &amp; deposit.</strong> Because the van and driver are committed to your date, we ask Grip Package + Van bookings to sign our rental form digitally below and hold a refundable $100 deposit against late cancellation (charged only if you cancel within 48 hours of your shoot time/date).
-          <div class="booking-grid" style="margin-top:14px;">
-            <div class="field">
-              <label for="gripSignature">Digital Signature (type full legal name)</label>
-              <input id="gripSignature" type="text" placeholder="Type your full name to sign">
-            </div>
-            <div class="field">
-              <label for="gripSignDate">Date</label>
-              <input id="gripSignDate" type="date">
-            </div>
-          </div>
-          <label class="addon" style="margin-top:10px;">
-            <input type="checkbox" id="gripAgree">
-            I've read and digitally sign the Indiglow Lighting rental form, and authorize a $100 refundable deposit, forfeited only if I cancel within 48 hours of my shoot time/date.
-          </label>
-          <button type="button" id="gripDepositBtn" class="btn" style="margin-top:14px;">Pay $100 Refundable Deposit</button>
-          <div class="mono" id="gripDepositMsg" style="display:none;margin-top:10px;font-size:12px;color:var(--indigo-glow);">✓ Deposit authorized. We'll confirm by email once your signed form and $100 hold are processed.</div>
+          <strong>Grip Package + Van &mdash; heads up.</strong> Because the van and driver are committed to your date, these bookings include a digital rental form and a refundable $100 deposit (forfeited only if you cancel within 48 hours of your shoot time/date). You won't sign or pay anything here &mdash; we'll send both along with your official invoice and contract in step two.
         </div>
 
         <div class="quote-panel">
@@ -1320,19 +1304,6 @@
   }
   gripVanCheckbox.addEventListener('change', syncGripVanState);
   syncGripVanState();
-
-  const gripDepositBtn = document.getElementById('gripDepositBtn');
-  if(gripDepositBtn){
-    gripDepositBtn.addEventListener('click', () => {
-      const sig = document.getElementById('gripSignature').value.trim();
-      const agree = document.getElementById('gripAgree').checked;
-      if(!sig || !agree){
-        alert('Please type your full name as your digital signature and check the agreement box before paying the deposit.');
-        return;
-      }
-      document.getElementById('gripDepositMsg').style.display = 'block';
-    });
-  }
 
   /* ===== Full Light Package auto-includes the light-shaping modifiers ===== */
   const allLightsCheckbox = document.querySelector('.quote-input[data-label="Full Light Package (all units)"]');
