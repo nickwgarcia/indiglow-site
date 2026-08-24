@@ -352,10 +352,14 @@
   .package{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
   .package-panel{
     border:1px solid var(--line);
-    display:grid;grid-template-columns:1fr 1fr;
     box-shadow:0 0 30px -8px rgba(41,211,240,0.35);
   }
-  .package-price{padding:48px;border-right:1px solid var(--line);}
+  .manifest-panel{
+    border:1px solid var(--line);
+    box-shadow:0 0 30px -8px rgba(41,211,240,0.35);
+    margin-top:24px;
+  }
+  .package-price{padding:48px;}
   .package-price .name{font-family:'IBM Plex Mono',monospace;text-transform:uppercase;color:var(--indigo-glow);font-size:12px;letter-spacing:0.08em;margin-bottom:18px;text-shadow:0 0 6px rgba(143,240,252,0.5);}
   .price-row{display:flex;align-items:baseline;gap:8px;}
   .price-row .amount{font-family:'Bebas Neue',sans-serif;font-size:84px;color:var(--paper);text-shadow:0 0 18px rgba(41,211,240,0.35);}
@@ -369,9 +373,18 @@
   .inc-list li:last-child{border-bottom:none;}
   .inc-list .chk{width:15px;height:15px;border:1px solid var(--indigo-glow);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--indigo-glow);box-shadow:0 0 6px rgba(41,211,240,0.5);}
 
-  /* ===== Full manifest grid ===== */
-  .manifest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);box-shadow:0 0 30px -8px rgba(41,211,240,0.35);}
-  .manifest-cat{background:var(--bg);padding:30px 28px;}
+  /* ===== Itemized gear list ===== */
+  .manifest-head{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:16px;}
+  .manifest-head-text{flex:1;min-width:220px;}
+  .manifest-download{
+    display:inline-flex;align-items:center;gap:8px;flex-shrink:0;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.05em;text-transform:uppercase;
+    color:var(--indigo-glow);border:1px solid var(--indigo-glow);padding:11px 18px;
+    text-decoration:none;transition:background .2s ease,color .2s ease;
+  }
+  .manifest-download:hover{background:var(--indigo-glow);color:var(--bg);}
+  .manifest-grid{display:flex;flex-direction:column;gap:1px;background:var(--line);border:1px solid var(--line);}
+  .manifest-cat{background:var(--bg);padding:24px 28px;}
   .manifest-cat-name{
     font-size:12px;color:var(--indigo-glow);letter-spacing:0.08em;margin-bottom:16px;
     padding-bottom:12px;border-bottom:1px solid var(--line);text-shadow:0 0 6px rgba(143,240,252,0.5);
@@ -388,7 +401,6 @@
   .man-list{list-style:none;}
   .man-list li{display:flex;gap:12px;padding:7px 0;font-size:14px;color:var(--paper);}
   .man-list li span{font-family:'IBM Plex Mono',monospace;color:var(--slate);min-width:20px;flex-shrink:0;}
-  @media (max-width:860px){ .manifest-grid{grid-template-columns:1fr;} }
 
   /* ===== À la carte grid ===== */
   .carte-grid{
@@ -548,8 +560,6 @@
     .cs-row{padding:18px 0;}
     .hero-meta{gap:24px;}
     section{padding:70px 0;}
-    .package-panel{grid-template-columns:1fr;}
-    .package-price{border-right:none;border-bottom:1px solid var(--line);}
     .package-price .btn{width:100%;justify-content:center;}
     .carte-grid{grid-template-columns:1fr;}
     .booking-grid{grid-template-columns:1fr;}
@@ -676,11 +686,19 @@
         <p class="price-desc">One flat rate for the day. Covers the one-ton package and delivery van, the basics for interviews, music videos, and short commercial work. No insurance requirements, no ridiculous fees.</p>
         <a href="#booking" class="btn">Book This Package</a>
       </div>
+    </div>
+
+    <div class="manifest-panel reveal hud-corners">
       <div class="package-includes">
-        <div class="name">Full Manifest</div>
-        <p class="section-desc" style="margin-bottom:16px;">Every piece that ships with the package, itemized.</p>
+        <div class="manifest-head">
+          <div class="manifest-head-text">
+            <div class="name">Itemized Gear List</div>
+            <p class="section-desc" style="margin-bottom:0;">Every piece that ships with the package, itemized.</p>
+          </div>
+          <a href="Indiglow-Lighting-Gear-List.pdf" class="manifest-download" download>Download PDF</a>
+        </div>
         <div class="manifest-grid">
-      <details class="manifest-cat" open>
+      <details class="manifest-cat">
         <summary class="manifest-cat-name mono">Stands</summary>
         <ul class="man-list">
           <li><span>7</span>40" C-Stands</li>
@@ -693,7 +711,7 @@
           <li><span>4</span>Sets of 3 Caster Wheels (Combo Stands)</li>
         </ul>
       </details>
-      <details class="manifest-cat" open>
+      <details class="manifest-cat">
         <summary class="manifest-cat-name mono">Frame Kit &amp; Fabrics</summary>
         <ul class="man-list">
           <li><span>1</span>12x12' Frame Kit (breaks to 6x6')</li>
@@ -706,7 +724,7 @@
           <li><span>1</span>6x6' Ultra Bounce</li>
         </ul>
       </details>
-      <details class="manifest-cat" open>
+      <details class="manifest-cat">
         <summary class="manifest-cat-name mono">Floppies &amp; Diffusion</summary>
         <ul class="man-list">
           <li><span>4</span>Solid Floppy</li>
@@ -717,7 +735,7 @@
           <li><span>1</span>4x4' 216 Full White</li>
         </ul>
       </details>
-      <details class="manifest-cat" open>
+      <details class="manifest-cat">
         <summary class="manifest-cat-name mono">Flags</summary>
         <ul class="man-list">
           <li><span>2</span>24x36" Solid Flag</li>
@@ -726,7 +744,7 @@
           <li><span>1</span>24x36" Silk Flag</li>
         </ul>
       </details>
-      <details class="manifest-cat" open>
+      <details class="manifest-cat">
         <summary class="manifest-cat-name mono">Clamps &amp; Clips</summary>
         <ul class="man-list">
           <li><span>2</span>Cardellini Clamp</li>
@@ -739,7 +757,7 @@
           <li><span>10</span>#1 Clip</li>
         </ul>
       </details>
-      <details class="manifest-cat" open>
+      <details class="manifest-cat">
         <summary class="manifest-cat-name mono">Apple Boxes</summary>
         <ul class="man-list">
           <li><span>2</span>Full Apple</li>
@@ -748,7 +766,7 @@
           <li><span>1</span>⅛ Apple (Pancake)</li>
         </ul>
       </details>
-      <details class="manifest-cat" open>
+      <details class="manifest-cat">
         <summary class="manifest-cat-name mono">Sandbags</summary>
         <ul class="man-list">
           <li><span>4</span>25lb Sandbags</li>
@@ -756,14 +774,14 @@
           <li><span>4</span>20lb Sandbags</li>
         </ul>
       </details>
-      <details class="manifest-cat" open>
+      <details class="manifest-cat">
         <summary class="manifest-cat-name mono">Stingers</summary>
         <ul class="man-list">
           <li><span>4</span>25' Stingers</li>
           <li><span>4</span>50' Stingers</li>
         </ul>
       </details>
-      <details class="manifest-cat" open>
+      <details class="manifest-cat">
         <summary class="manifest-cat-name mono">Misc</summary>
         <ul class="man-list">
           <li><span>16</span>Sliced Tennis Balls</li>
@@ -1075,76 +1093,9 @@
     manifestResizeTimer = setTimeout(setManifestAccordionState, 200);
   });
 
-  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xaewkbdn';
-
   document.getElementById('bookingForm').addEventListener('submit', function(e){
     e.preventDefault();
-
-    const confirmEl = document.getElementById('confirmMsg');
-    const submitBtn = document.querySelector('.booking-submit');
-
-    // Gather package / lighting selections
-    const selections = [];
-    document.querySelectorAll('.quote-input').forEach(el => {
-      if(el.type === 'checkbox' && el.checked){
-        selections.push(el.dataset.label);
-      } else if(el.type === 'number' && parseInt(el.value, 10) > 0){
-        selections.push(`${el.dataset.label} ×${el.value}`);
-      }
-    });
-
-    // Gather dates
-    let datesSummary = '';
-    if(dateMode === 'range'){
-      const start = document.getElementById('rangeStart').value;
-      const end = document.getElementById('rangeEnd').value;
-      datesSummary = `${start} to ${end}`;
-    } else {
-      datesSummary = selectedDates.join(', ');
-    }
-
-    // Gather crew
-    const crewSummary = crewList.map(c => `${c.position} ×${c.qty}`).join(', ');
-
-    const payload = {
-      name: document.getElementById('name').value,
-      email: document.getElementById('email').value,
-      phone: document.getElementById('phone').value,
-      dates: datesSummary,
-      package_and_addons: selections.join(', ') || 'None selected',
-      crew: crewSummary || 'None requested',
-      estimated_total: document.getElementById('quoteTotal').textContent,
-      notes: document.getElementById('notes').value,
-      _subject: 'New Booking Request'
-    };
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending...';
-
-    fetch(FORMSPREE_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(payload)
-    })
-    .then(res => {
-      if(res.ok){
-        confirmEl.textContent = '✓ Request sent. We\'ll confirm by email shortly.';
-        confirmEl.style.display = 'block';
-        document.getElementById('bookingForm').reset();
-        updateQuote();
-      } else {
-        confirmEl.textContent = 'Something went wrong sending your request. Please email info@indiglowlighting.com directly.';
-        confirmEl.style.display = 'block';
-      }
-    })
-    .catch(() => {
-      confirmEl.textContent = 'Something went wrong sending your request. Please email info@indiglowlighting.com directly.';
-      confirmEl.style.display = 'block';
-    })
-    .finally(() => {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Request Booking';
-    });
+    document.getElementById('confirmMsg').style.display = 'block';
   });
 
   let fulfillMode = 'delivery';
